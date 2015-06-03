@@ -4,7 +4,9 @@ app.factory('viajes', ['$http', 'auth', function($http, auth){
   };
 
   o.getAll = function() {
-    return $http.get('/viajes').success(function(data){
+    return $http.get('/viajes',{
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
       angular.copy(data, o.viajes);
     });
   };
@@ -26,8 +28,40 @@ app.factory('viajes', ['$http', 'auth', function($http, auth){
     });
   };
 
+  o.guardarEdicionDeViaje = function(id, viaje){
+    return $http.put('/viajes/'+id, viaje, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
+  }
+  //CIUDAD
+  o.agregarCiudad = function(id, ciudad) {
+    return $http.post('/viajes/' + id + '/ciudad', ciudad, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
+  };
+
+  o.guardarEdicionDeCiudad = function(id, ciudad){
+    console.log("aca estoy")
+    return $http.put('/ciudad/'+id, ciudad, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    });
+  }
+  o.borrarCiudad = function(viajeId,viajeIndex,ciudadId,ciudadIndex) {
+    return $http.delete('/ciudad/' + ciudadId, {
+    headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      console.log("deleeeeeeeeee ciudades " + ciudadIndex)
+
+    });
+  };
+  //
   o.get = function(id) {
   return $http.get('/viajes/' + id).then(function(res){
+      return res.data;
+    });
+  };
+  o.getCiudad = function(id) {
+  return $http.get('/ciudad/' + id).then(function(res){
       return res.data;
     });
   };

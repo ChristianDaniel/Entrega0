@@ -1,0 +1,28 @@
+<div class="col-md-6 col-md-offset-3">
+    <button class="btn btn-primary back-btn" ng-click="gotoHomePage();">
+      <span class="glyphicon glyphicon-home"></span> Home Page
+    </button>
+
+    <form ng-submit="addViaje()" ng-show="isLoggedIn()" style="margin-top:30px;">
+      <h3>Agregar un nuevo viaje</h3>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Nombre" ng-model="nombre" required></input>
+      </div>
+
+      <div class="form-group">       
+      
+        <p class="input-group">
+          <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" is-open="openedFrom" min-date="'22.06.2014'" max-date="'22.12.2020'" ng-model="fecha_inicio" placeholder="Fecha de inicio" disabled required></input>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+      
+          <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" is-open="openedUntil" min-date="'22.06.2014'" max-date="'22.12.2020'" ng-model="fecha_fin" placeholder="Fecha de fin" required disabled></input>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openUntil($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+
+      <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"> </span> Guardar</button>
+    </form> 
+  </div>

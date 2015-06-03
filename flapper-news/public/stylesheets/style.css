@@ -1,7 +1,11 @@
 <!-- bower:css -->
 <link rel="stylesheet" href="../javascripts/lib/bootstrap/dist/css/bootstrap.css" />
 <link rel="stylesheet" href="../javascripts/lib/angular-dialog-service/dist/dialogs.min.css" />
+<link rel="stylesheet" href="../javascripts/lib/ng-tags-input/ng-tags-input.min.css" />
+<link rel="stylesheet" href="../javascripts/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
 <!-- endbower -->
+
+
 
 rbody {
   padding: 50px;
@@ -12,10 +16,12 @@ a {
   color: #00B7FF;
 }
 
+
 .back-btn{
 	float: right;
 }
 
+ .glyphicon glyphicon glyphicon-comment { cursor:pointer } 
  .glyphicon glyphicon-plane { cursor:pointer } 
  .glyphicon glyphicon-home { cursor:pointer } 
  .glyphicon glyphicon-fire { cursor:pointer }
@@ -39,4 +45,23 @@ a {
 .dialog-header-notify { background-color: #eeeeee; }
 
 .pad { padding: 25px; }
- 
+
+.angular-google-map-container { height: 400px; }
+
+.label-as-badge { border-radius: 1em; }
+
+#container1 {
+    float:left;
+    height:25%;
+}
+#col1 {
+    float:left;
+    width:37%;
+    vertical-align: middle;
+
+}
+#col2 {
+    float:left;
+    width:63%;
+
+}

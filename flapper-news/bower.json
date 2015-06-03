@@ -25,6 +25,11 @@
     "angular-moment": "~0.10.0",
     "angular-sanitize": "~1.3.15",
     "angular-dialog-service": "5.2.6",
-    "angular-google-maps": "~2.0.19"
+    "angular-google-maps": "~2.1.0",
+    "ng-tags-input": "~2.3.0",
+    "ngAutocomplete": "~1.0.0",
+    "express": "~4.12.3",
+    "angular-bootstrap-calendar": "~0.10.6",
+    "angular-ui-select": "~0.11.2",
   }
 }

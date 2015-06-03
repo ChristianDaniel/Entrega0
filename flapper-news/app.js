@@ -16,6 +16,7 @@ require('./config/passport');
 
 
 require('./models/Viajes');
+require('./models/Ciudades');
 
 
 var routes = require('./routes/index');

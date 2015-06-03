@@ -1,0 +1,76 @@
+<div class="col-md-9 col-md-offset-1">
+    
+    <div class="page-header">
+      <button class="btn btn-primary back-btn" ng-click="gotoHomePage();">
+        <span class="glyphicon glyphicon-home"></span> Home Page
+      </button>
+      
+      <h2 class ="glyphicon glyphicon-plane"> 
+          {{viaje.nombre}}
+      </h2>
+
+      <h3> 
+          {{ciudad.nombre}}
+      </h3>
+
+      <div  class="form-group" id="col1">
+
+        <br>
+        <div>
+            <h4>Seleccione un hotel</h4>     
+
+
+            <ui-select ng-model="hotel.selected" theme="bootstrap" ng-disabled="disabled" style="width: 300px;">
+              <ui-select-match placeholder="Tipee el nombre de algun hotel">{{$select.selected.nombre}}</ui-select-match>
+              <ui-select-choices repeat="hotel in hoteles | filter: $select.search">
+                <span ng-bind-html="hotel.nombre | highlight: $select.search"></span>
+              </ui-select-choices>
+            </ui-select>
+
+            <button type="button" class="btn btn-primary back-btn" ng-hide="hotel.selected == null" style="float: left" ng-click="openPunto(hotel.selected)">Detalles</button>
+
+            </p>
+
+        </div>
+          
+        </br>
+
+        <h4>Puntos de interes</h4>
+        
+        <input type="text" class="form-control" placeholder="Agrega un punto de interes" style="width: 300px;" ng-model="punto_interes" name="" 
+         id="Autocomplete"  ng-autocomplete="result" details="details" options="options" >
+
+        
+        <button type="button" class="btn btn-success" ng-click="addNewChoice()">Agregar punto interes</button>
+      
+        <div class="form-group" data-ng-repeat="punto in ciudad.puntosDeInteres" > 
+            <button class="btn btn-danger" ng-click="borrarPuntoDeInteres(punto);" style="float: right">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button> 
+            <button class="btn btn-primary back-btn" ng-click="openPunto(punto)" style="float: right">
+                <span class="glyphicon glyphicon-comment"></span>
+            </button>     
+            <div style="overflow: hidden; padding-right: .5em;">
+                {{punto.nombre}}
+            </div>
+        </div>
+       </div>
+
+    
+       <div id="col2"> 
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' id="mapapuntos">
+          <ui-gmap-marker idKey="$index" data-ng-repeat="marker in ciudad.puntosDeInteres" coords="marker">
+            <ui-gmap-window isIconVisibleOnClick="true">
+              <p>
+                {{marker.nombre}}
+              </p>
+            </ui-gmap-window>
+          </ui-gmap-marker>
+         </ui-gmap-google-map>
+        <br>
+        <br>
+       </div> 
+
+      <div id="map-canvas"></div>
+    </div>
+  </div>

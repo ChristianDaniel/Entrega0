@@ -5,6 +5,17 @@ app.controller('NewViajeCtrl', [
 'auth',
 'dialogs',
 function($scope, viajes, auth, dialogs){
+
+   $scope.markerList = []
+   $scope.result = '';
+    $scope.options = {
+      types: '(cities)',
+      watchEnter: true
+    };    
+    $scope.details = '';
+
+
+  $scope.ciudades = [];
   $scope.isLoggedIn = auth.isLoggedIn;
   
   $scope.gotoHomePage = function(){
@@ -19,16 +30,23 @@ function($scope, viajes, auth, dialogs){
         return;
     } 
 
+    destinos = [];
+    $scope.ciudades.forEach(function(ciudad) {
+        destinos.push(ciudad.nombre);
+      });
+
     viajes.create({
       nombre: $scope.nombre,
+      usuario: "",
       fecha_inicio: $scope.fecha_inicio,
       fecha_fin: $scope.fecha_fin,
-      destino: $scope.destino
+      ciudades: destinos
     });	
     $scope.nombre = '';
     $scope.fecha_inicio = '';
     $scope.fecha_fin = '';
-    $scope.destino = '';
+    $scope.ciudad = '';
+    $scope.ciudades = [];
   };
 
   $scope.openFrom = function($event) {

@@ -1,0 +1,101 @@
+  <div class="col-md-6 col-md-offset-3">
+    <div>
+      <div class="page-header">
+        <button class="btn btn-primary back-btn" ng-click="gotoHomePage();">
+          <span class="glyphicon glyphicon-home"></span> Home Page
+        </button>
+        <h3 class ="glyphicon glyphicon-plane"> 
+            {{viaje.nombre}}
+        </h3>
+      </div>
+      <table>
+        <tr><td><u>Usuario</u>: {{viaje.usuario}}</td></tr>
+        <tr><td> <u>Fechas</u> </td></tr>
+        <tr> <td><pre>Fecha inicio: <em>{{viaje.fecha_inicio | date:'fullDate' }}</em></pre></td></tr>
+        <tr> <td><pre>Fecha fin   : <em>{{viaje.fecha_fin | date:'fullDate' }}</em></pre></td></tr>
+        <tr><td><u>Ciudades</u>:</td></tr>
+      </table>
+      
+      <div  class="form-group">
+        <button type="button" class="btn btn-success" ng-click="agregarCiudad()" style="float: right">Agregar Ciudad</button>
+        <div style="padding-right: 9.5em;">
+          <input type="text" class="form-control" placeholder="Agrega una ciudad" ng-model="nombre_ciudad" name="" 
+            id="Autocomplete"  ng-autocomplete="result" details="details" options="options" style="width: 100%;"><br>
+          <input type="Number" class="form-control" placeholder="Cantidad De Dias" ng-model="cantidadDeDias" style="width: 100%;">
+        </div>
+      </div>
+      <!--{{details}}-->
+
+      <div class="form-group" data-ng-repeat="ciudad in viaje.ciudades"> 
+       <button class="btn btn-danger" ng-click="borrarCiudad(ciudad);" style="float: right">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>      
+        <div style="overflow: hidden; padding-right: .5em;">
+            <a href="#/ciudad/{{ciudad._id}}"> {{ciudad.nombre}}</a>
+            <td> / {{ciudad.cantidadDeDias}} Dias </td>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-warning" ng-click="isCollapsed = !isCollapsed" data-target="#calendario">
+        Ver Calendario
+      </button>
+
+      <div id="calendario" collapse="isCollapsed"> 
+
+      <h2 class="text-center ng-binding">{{calendarTitle}}</h2>
+      <div class="row">
+        <div class="col-md-6 text-center">
+          <div class="btn-group">
+            <button decrement="calendarView" date="calendarDay" mwl-date-modifier="" class="btn btn-primary ng-isolate-scope">
+              Anterior
+            </button>
+            <button set-to-today="" date="calendarDay" mwl-date-modifier="" class="btn btn-default ng-isolate-scope">
+              Hoy
+            </button>
+            <button increment="calendarView" date="calendarDay" mwl-date-modifier="" class="btn btn-primary ng-isolate-scope">
+              Siguiente
+            </button>
+          </div>
+        </div>
+
+        <br class="visible-xs visible-sm">
+
+        <div class="col-md-6 text-center">
+          <div class="btn-group">
+            <label btn-radio="'year'" ng-model="calendarView" class="btn btn-primary ng-pristine ng-untouched ng-valid">Anio</label>
+            <label btn-radio="'month'" ng-model="calendarView" class="btn btn-primary ng-pristine ng-untouched ng-valid active">Mes</label>
+            <label btn-radio="'week'" ng-model="calendarView" class="btn btn-primary ng-pristine ng-untouched ng-valid">Semana</label>
+          </div>
+        </div>
+
+      </div>
+      <br>
+      <div class="row">
+        <mwl-calendar
+          events="events"
+          view="calendarView"
+          view-title="calendarTitle"
+          current-day="calendarDay"
+          edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
+          delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
+          auto-open="true">
+        </mwl-calendar>
+      </div>
+      </div>
+
+      <br>
+      <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+        <ui-gmap-marker idKey="$index" data-ng-repeat="marker in viaje.ciudades" coords="marker">
+          <ui-gmap-window isIconVisibleOnClick="true">
+            <p>
+              {{marker.message}}
+            </p>
+          </ui-gmap-window>
+        </ui-gmap-marker>
+        <ui-gmap-polyline path="viaje.ciudades" stroke="{color: '#103AED'}"></ui-gmap-polyline>
+      </ui-gmap-google-map>
+
+
+  </div>
+</div>
+  

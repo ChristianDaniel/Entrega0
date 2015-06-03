@@ -1,0 +1,48 @@
+<div class="modal-header">
+            <h3 class="modal-title">{{punto.nombre}}</h3>
+        </div>
+       
+        <div id="info-content">
+          <table>
+            <tr >
+              <td ng-show="is_direccion"> <u>Direccion</u>: {{punto.direccion}}</td>
+            </tr>
+            <tr >
+              <td ng-show="is_numero_telefono"> <u>Telefono</u>: {{punto.numero_telefono}}</td>
+            </tr>
+            <tr >
+              <td ng-show="is_numero_telefono_internacional"><u>Telefono internacional</u>: {{punto.numero_telefono_internacional}}</td>
+            </tr>
+            <tr >
+              <td ng-show="is_raiting" >
+              <div> <u>Calificación</u>: 
+                <rating  ng-model="rate" value="rate" max="max" readonly="isReadonly"  ></rating>
+                <span 
+                 ng-class="{'label label-warning label-as-badge': percent<30, 'label label-info label-as-badge': percent>=30 && percent<70, 'label label-success label-as-badge': percent>=70}" >{{percent}}%</span>
+              </div>
+              </td>
+            </tr>
+            <tr >
+              <td  ng-show="is_website"> <u>Web</u>: <a href={{punto.website}}> {{punto.website}}</a> </td>
+            </tr>
+            <tr >
+              <td  ng-show="is_comentarios_huespedes">
+                <button type="button" class="btn btn-primary" ng-click="isCollapsed = !isCollapsed" data-target="#demo">
+                   Ver comentarios
+                </button>
+
+                <div id="demo" collapse="isCollapsed"> 
+                <br> 
+                   <div ng-repeat="comentario in punto.comentarios_huespedes" class="well well-sm">
+                     {{comentario.texto}} 
+                     <br>
+                     <b> {{comentario.autor}} </b>
+                  </div>
+                </div>
+              </td>
+            </tr> 
+          </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+        </div>

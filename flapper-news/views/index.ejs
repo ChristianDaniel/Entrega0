@@ -1,208 +1,109 @@
 <html>
-<head>
-  <!-- bower:css -->
-  <link rel="stylesheet" href="/javascripts/lib/bootstrap/dist/css/bootstrap.css" />
-  <link rel="stylesheet" href="/javascripts/lib/angular-dialog-service/dist/dialogs.min.css" />
-  <!-- endbower -->
+  <head>
 
-  <!-- bower:js-->
-  <script src="/javascripts/lib/jquery/dist/jquery.js"></script>
-  <script src="/javascripts/lib/angular/angular.js"></script>
-  <script src="/javascripts/lib/angular-ui-router/release/angular-ui-router.js"></script>
-  <script src="/javascripts/lib/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="/javascripts/lib/moment/moment.js"></script>
-  <script src="/javascripts/lib/angular-moment/angular-moment.js"></script>
-  <script src="/javascripts/lib/angular-sanitize/angular-sanitize.js"></script>
-  <script src="/javascripts/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-  <script src="/javascripts/lib/angular-translate/angular-translate.js"></script>
-  <script src="/javascripts/lib/angular-dialog-service/dist/dialogs.min.js"></script>
-  <script src="/javascripts/lib/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
-  <script src="/javascripts/lib/lodash/dist/lodash.compat.js"></script>
-  <script src="/javascripts/lib/angular-google-maps/dist/angular-google-maps.js"></script>
-  <!-- endbower-->
-  
-  <title>Vacaciones permanentes</title>
-  
-  <!--
-  IMPORTS DE LA MANERA ANTERIOR
-  <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
-  <script src="//code.angularjs.org/1.3.0/angular-sanitize.min.js"></script> 
-  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
-  <script src="/javascripts/directories/angular-moment.min.js"></script>
-  <script src="/javascripts/directories/moment.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>  -->
-
-  <!-- ------------------------------------- ENTREGA 1 ----------------------------- -->
-
-  <script src="/javascripts/directories/dialogs.min.js"></script>
-  
-  <!-- ------------------------------------- ENTREGA 1 ----------------------------- -->
-
-  
-  <script src="/javascripts/angularApp.js"></script>
-  
-  <script src="/javascripts/controllers/mainCtrl.js"></script>
-  <script src="/javascripts/controllers/authCtrl.js"></script>
-  <script src="/javascripts/controllers/navCtrl.js"></script>
-  <script src="/javascripts/controllers/viajesCtrl.js"></script>
-  <script src="/javascripts/controllers/newViajeCtrl.js"></script>
-
-  <script src="/javascripts/services/authFactory.js"></script>
-  <script src="/javascripts/services/viajesFactory.js"></script>
-
-
-</head>
-
-<body ng-app="flapperNews">
-  <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
-    <ul class="nav navbar-nav">
-      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()"> <span class="glyphicon glyphicon-log-out"></span> Desloguearse</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/login"> <span class="glyphicon glyphicon-log-in"></span>Loguearse</a></li>
-      <li ng-hide="isLoggedIn()"><a href="/#/register">Registrarse</a></li>
-    </ul>
-  </nav>
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <ui-view></ui-view>  
-    </div>
-  </div>
-
-
-
-<script type="text/ng-template" id="/home.html">
-    <div class="page-header">
-      <h1>Vacaciones permanentes</h1>
-    </div>
     
-    <table>
-      
-        <td><a ng-click="changeSort('nombre')"> Nombre </a></td>
-        <td><a ng-click="changeSort('fecha_inicio')"> Fecha de inicio </a></td>
-      
-      <tr  ng-repeat="viaje in viajes | orderBy:sort:reverse">
-        {{viaje.nombre}}
-        <td class = "glyphicon glyphicon-plane" style="font-size:20px; margin-left:10px;">
-          <a href="#/viajes/{{viaje._id}}"> {{viaje.nombre}}</a>
-        </td>
-        <td>
-          <pre>Fecha inicio: <em>{{viaje.fecha_inicio | date:'fullDate' }}</em></pre>
-          <pre>Fecha fin   : <em>{{viaje.fecha_fin | date:'fullDate' }}</em></pre>
-        </td>
-        <td>
-          <button class="btn btn-danger" ng-click="borrarViaje(viaje);">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </td>
-      </tr>
-    </table>
-    <div ng-hide="isLoggedIn()">
-        <h3>Necesitas <a href="/#/login">loggearte</a> or <a href="/#/register">registrarte</a> antes de agregar un viaje.</h3>
-    </div>
-    <button class="btn btn-primary back-btn" ng-click="createViajePage();">Crear Viaje</button>
-</script>
+    <title>Vacaciones permanentes</title>
 
-<script type="text/ng-template" id="/createViaje.html">
+    <style>
+        html, body, #map-canvas {
+          height: 0%;
+          margin: 0px;
+          padding: 0px
+        }
+      </style>
+
+    <!-- bower:css -->
+    <link rel="stylesheet" href="/javascripts/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/javascripts/lib/angular-dialog-service/dist/dialogs.min.css" />
+    <link rel="stylesheet" href="/javascripts/lib/ng-tags-input/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="/javascripts/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+    <link rel="stylesheet" href="/javascripts/lib/angular-ui-select/dist/select.css" />
+    <!-- endbower -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>-->
+
+
+    <!-- bower:js-->
+    <script src="/javascripts/lib/jquery/dist/jquery.js"></script>
+    <script src="/javascripts/lib/angular/angular.js"></script>
+    <script src="/javascripts/lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/javascripts/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/javascripts/lib/moment/moment.js"></script>
+    <script src="/javascripts/lib/angular-moment/angular-moment.js"></script>
+    <script src="/javascripts/lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/javascripts/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/javascripts/lib/angular-translate/angular-translate.js"></script>
+    <script src="/javascripts/lib/angular-dialog-service/dist/dialogs.min.js"></script>
+    <script src="/javascripts/lib/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
+    <script src="/javascripts/lib/lodash/dist/lodash.compat.js"></script>
+    <script src="/javascripts/lib/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="/javascripts/lib/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="/javascripts/lib/ngAutocomplete/src/ngAutocomplete.js"></script>
+    <script src="/javascripts/lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
+    <script src="/javascripts/lib/angular-ui-select/dist/select.js"></script> 
+    <!-- endbower-->
+
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     
-    <button class="btn btn-primary back-btn" ng-click="gotoHomePage();">
-      <span class="glyphicon glyphicon-home"></span> Home Page
-    </button>
+    
+    <!-- COMENTÁ ESTO HASTA.... 
+    <link rel="stylesheet" href="/stylesheets/angular-bootstrap-calendar.css">
+    <link rel="stylesheet" href="/stylesheets/select.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+    <script src="/javascripts/directories/moment.js"></script>
+    <script src="/javascripts/directories/angular-moment.min.js"></script>
+    <script src="/javascripts/directories/ngAutocomplete.js"></script>
+    <script src="/javascripts/directories/angular-google-maps.js"></script>
+    <script src="/javascripts/directories/lodash.js"></script>
+    <script src="//code.angularjs.org/1.3.0/angular-sanitize.min.js"></script> 
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
 
-    <form ng-submit="addViaje()" ng-show="isLoggedIn()" style="margin-top:30px;">
-      <h3>Agregar un nuevo viaje</h3>
-      <div class="form-group">
-        <input type="text" class="form-control" placeholder="Nombre" ng-model="nombre" required></input>
-      </div>
-      <div class="form-group">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Destino" ng-model="destino" required></input>
-        </div>
-        <p class="input-group">
-          <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" is-open="openedFrom" min-date="'22.06.2014'" max-date="'22.12.2020'" ng-model="fecha_inicio" placeholder="Fecha de inicio" disabled required></input>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="openFrom($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
+    <script src="/javascripts/directories/angular-bootstrap-calendar-tpls.js"></script>
+    <script src="/javascripts/directories/select.js"></script>
+
+    <!-- ....ACÁ -->
+
+    <!-- ------------------------------------- ENTREGA 1 ----------------------------- -->
+
+    <script src="/javascripts/directories/dialogs.min.js"></script>
+    
+    <!-- ------------------------------------- ENTREGA 1 ----------------------------- -->
+
+    
+    <script src="/javascripts/angularApp.js"></script>
+    
+    <script src="/javascripts/controllers/mainCtrl.js"></script>
+    <script src="/javascripts/controllers/authCtrl.js"></script>
+    <script src="/javascripts/controllers/navCtrl.js"></script>
+    <script src="/javascripts/controllers/viajesCtrl.js"></script>
+    <script src="/javascripts/controllers/newViajeCtrl.js"></script>
+    <script src="/javascripts/controllers/DetalleCiudadCtrl.js"></script>
+
+    <script src="/javascripts/services/authFactory.js"></script>
+    <script src="/javascripts/services/viajesFactory.js"></script>
+
+
+  </head>
+
+  <body ng-app="flapperNews">
+    <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
+      <ul class="nav navbar-nav">
+        <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+        <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()"> <span class="glyphicon glyphicon-log-out"></span> Desloguearse</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/login"> <span class="glyphicon glyphicon-log-in"></span> Loguearse</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/register">Registrarse</a></li>
+      </ul>
+    </nav>
+    <div class="row">
       
-          <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" is-open="openedUntil" min-date="'22.06.2014'" max-date="'22.12.2020'" ng-model="fecha_fin" placeholder="Fecha de fin" required disabled></input>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="openUntil($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-        </p>
-      </div>
-      <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk"> </span> Guardar</button>
-    </form> 
-</script>
-
-
-  
-
-<script type="text/ng-template" id="/viajes.html">
-    <div class="page-header">
-    <button class="btn btn-primary back-btn" ng-click="gotoHomePage();">
-      <span class="glyphicon glyphicon-home"></span> Home Page
-    </button>
-      <h3 class ="glyphicon glyphicon-plane"> 
-          {{viaje.nombre}}
-      </h3>
+        <ui-view></ui-view>  
+     
     </div>
-    <table>
-      <tr><td><u>Destino</u>: {{viaje.destino}}</td></tr>
-      <tr><td><u>Usuario</u>: {{viaje.usuario}}</td></tr>
-      <tr><td> <u>Fechas</u> </td></tr>
-      <tr> <td><pre>Fecha inicio: <em>{{viaje.fecha_inicio | date:'fullDate' }}</em></pre></td></tr>
-      <tr> <td><pre>Fecha fin   : <em>{{viaje.fecha_fin | date:'fullDate' }}</em></pre></td></tr>
-    </table>
-</script>
 
-
-  
-
-<script type="text/ng-template" id="/register.html">
-  <div class="page-header">
-    <h1>Flapper News</h1>
-  </div>
-
-  <div ng-show="error" class="alert alert-danger row">
-    <span>{{ error.message }}</span>
-  </div>
-
-  <form ng-submit="register()"
-    style="margin-top:30px;">
-    <h3>Register</h3>
-
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
-</script>
-
-<script type="text/ng-template" id="/login.html">
-  <div class="page-header">
-    <h1>Flapper News</h1>
-  </div>
-
-  <div ng-show="error" class="alert alert-danger row">
-    <span>{{ error.message }}</span>
-  </div>
-
-  <form ng-submit="logIn()" style="margin-top:30px;">
-    <h3>Log In</h3>
-
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
-    </div>
-    <button type="submit" class="btn btn-primary">Log In</button>
-  </form>
-  </script>
-</body>
+  </body>
 </html>
 

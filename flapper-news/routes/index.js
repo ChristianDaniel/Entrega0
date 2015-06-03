@@ -1,3 +1,4 @@
+//mongod --config c:\mongodb\mongo.config
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -7,10 +8,8 @@ var jwt = require('express-jwt');
 
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
-
-// ------------------------------- ENTREGA 1  -------------------------------------------
-
 var Viaje = mongoose.model('Viaje');
+var Ciudad = mongoose.model('Ciudad');
 
 router.param('viaje', function(req, res, next, id) {
   var query = Viaje.findById(id);
@@ -24,8 +23,8 @@ router.param('viaje', function(req, res, next, id) {
   });
 });
 
-router.get('/viajes', function(req, res, next) {
-  Viaje.find(function(err, viajes){
+router.get('/viajes', auth, function(req, res, next) {
+  Viaje.find({usuario: req.payload.username},function(err, viajes){
     if(err){ return next(err); }
 
     res.json(viajes);
@@ -48,14 +47,33 @@ router.delete('/viajes/:viaje', auth, checkearPermisos, function(req, res) {
     res.json('');
   });
 });
+router.delete('/ciudad/:ciudad', auth, checkearPermisos, function(req, res) {
+  var ciudad = req.ciudad
+
+  ciudad.remove(function(err){
+    if(err){ return next(err); }
+
+    res.json('');
+  });
+});
 var a = function(req, res) {
-  res.json(req.viaje);
+  req.viaje.populate('ciudades', function(err, viaje) {
+    if (err) { return next(err); }
+
+    res.json(viaje);
+  });
+  //res.json(req.viaje);
 }
 router.get('/viajes/:viaje', a);
 
-router.post('/createViaje', auth, function(req, res, next) {
-  var viaje = new Viaje(req.body);
-  viaje.usuario = req.payload.id;
+router.get('/ciudad/:ciudad', function(req, res){
+  res.json(req.ciudad);
+});
+
+router.put('/viajes/:viaje', auth, function(req, res, next){
+  var viaje = req.viaje
+
+  viaje.ciudades = req.body.ciudades;
 
   viaje.save(function(err, viaje){
     if(err){ return next(err); }
@@ -64,6 +82,59 @@ router.post('/createViaje', auth, function(req, res, next) {
   });
 });
 
+router.post('/createViaje', auth, function(req, res, next) {
+  var viaje = new Viaje(req.body);
+  viaje.usuario = req.payload.username;
+  viaje.save(function(err, viaje){
+    if(err){ return next(err); }
+
+    res.json(viaje);
+  });
+});
+//
+router.post('/viajes/:viaje/ciudad', auth, function(req, res, next) {
+  var ciudad = new Ciudad(req.body);
+  //ciudad.viaje = req.viaje;
+  //ciudad.author = req.payload.username;
+
+  ciudad.save(function(err, ciudad){
+    if(err){ return next(err); }
+
+    req.viaje.ciudades.push(ciudad);
+    req.viaje.save(function(err, viaje) {
+      if(err){ return next(err); }
+
+      res.json(ciudad);
+    });
+  });
+});
+
+router.put('/ciudad/:ciudad', auth, function(req, res, next){
+  var ciudad = req.ciudad
+
+  if(req.body.puntosDeInteres)  ciudad.puntosDeInteres = req.body.puntosDeInteres;
+  if(req.body.hotelReference) ciudad.hotelReference = req.body.hotelReference;
+
+  ciudad.save(function(err, ciudad){
+    if(err){ return next(err); }
+
+    res.json(ciudad);
+  });
+});
+
+//
+router.param('ciudad', function(req, res, next, id) {
+  var query = Ciudad.findById(id);
+
+  query.exec(function (err, ciudad){
+    if (err) { return next(err); }
+    if (!ciudad) { return next(new Error('No se puede encontrar esa Ciudad')); }
+
+    req.ciudad = ciudad;
+    return next();
+  });
+});
+//
 // ------------------------------- ENTREGA 1 -------------------------------------------
 
 

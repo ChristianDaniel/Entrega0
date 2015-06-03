@@ -1,0 +1,33 @@
+ <div class="col-md-6 col-md-offset-3">
+    <div class="page-header">
+      <h1>Vacaciones permanentes</h1>
+    </div>
+    
+    <table>
+      
+        <td><a ng-click="changeSort('nombre')"> Nombre </a></td>
+        
+        <td><a ng-click="changeSort('fecha_inicio')"> Fecha de inicio </a></td>
+      
+      <tr  ng-repeat="viaje in viajes | orderBy:sort:reverse">
+        {{viaje.nombre}}
+        <td class = "glyphicon glyphicon-plane" style="font-size:20px; margin-left:10px;">
+          <a href="#/viajes/{{viaje._id}}"> {{viaje.nombre}}</a>
+        </td>
+        
+        <td>
+          <pre>Fecha inicio: <em>{{viaje.fecha_inicio | date:'fullDate' }}</em></pre>
+          
+        </td>
+        <td>
+          <button class="btn btn-danger" ng-click="borrarViaje(viaje);">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </td>
+      </tr>
+    </table>
+    <div ng-hide="isLoggedIn()">
+        <h3>Necesitas <a href="/#/login">loggearte</a> or <a href="/#/register">registrarte</a> antes de agregar un viaje.</h3>
+    </div>
+    <button class="btn btn-primary back-btn" ng-click="createViajePage();">Crear Viaje</button>
+  </div>  
